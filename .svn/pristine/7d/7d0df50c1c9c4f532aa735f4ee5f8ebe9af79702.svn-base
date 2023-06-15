@@ -1,0 +1,46 @@
+from abc import ABC, abstractmethod
+
+class PaymentMethod(ABC):
+    @abstractmethod
+    def pay(self) -> None:
+        pass
+
+class ShoppingCart:
+    def __init__(self, payment_method : PaymentMethod) -> None:
+        self.__payment_method = payment_method
+
+
+    def call_shopping_cart(self) -> None:
+        self.__payment_method.pay()
+
+    def set_payment_method(self, payment_method : PaymentMethod) -> None:
+        self.__payment_method = payment_method
+
+
+class Paypal(PaymentMethod):
+    def pay(self) -> None:
+        print("Paying with paypal")
+
+
+class CreditCard(PaymentMethod):
+    def pay(self) -> None:
+        print("Paying with credit card")
+
+class ApplePay(PaymentMethod):
+    def pay(self) -> None:
+        print("Paying with Apply Pay")
+
+class Sepa(PaymentMethod):
+    def pay(self) -> None:
+        print("Paying with SEPA")
+
+class Bitcoin(PaymentMethod):
+    def pay(self) -> None:
+        print("Paying with Bitcoin")
+
+
+if __name__ == "__main__":
+    shopping_cart : ShoppingCart = ShoppingCart(CreditCard())
+    shopping_cart.call_shopping_cart()
+    shopping_cart.set_payment_method(Bitcoin())
+    shopping_cart.call_shopping_cart()

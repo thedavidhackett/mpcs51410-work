@@ -1,0 +1,9 @@
+{
+  "tests.py::test_get_instructor_detail": true,
+  "tests.py::test_student_registers": true,
+  "tests.py::test_student_registers_with_restrictions": true,
+  "tests.py::test_student_registers_with_overload": true,
+  "tests.py::test_student_registers_for_closed_class": true,
+  "tests.py::test_get_course_by_id": true,
+  "tests.py::test_get_courses_by_criteria": true
+}

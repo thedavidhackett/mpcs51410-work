@@ -1,0 +1,21 @@
+{% extends 'base.html' %} {% block header %}
+<h1>{% block title %}{{course.id}}-{{course.course.name}} {% endblock %}</h1>
+{% endblock %} {% block content %}
+<div>
+  <h2>Time/Location</h2>
+  {% for t in course.times %}
+  <p>{{t.day}}, {{t.start_time}} to {{t.end_time}}</p>
+  {% endfor %}
+</div>
+<div>
+  <h2>Description</h2>
+  <p>{{ course.course.description }}</p>
+  <form method="post">
+    {% if g.user.is_enrolled_in_course(course.id) %}
+    <button type="submit" , name="drop" , value="drop">Drop</button>
+    {% else %}
+    <button type="submit" , name="register" , value="register">Register</button>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}

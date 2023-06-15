@@ -1,0 +1,11 @@
+For my prototype I'd like to focus on the Course Registration Bounded context. This will implement the following user stories:
+
+student adds a class
+student requests permission for a class
+student views a course
+student views courses
+instructor approves a course request
+student drops a course
+student reschedules a course
+
+Note the student, instructor, and course contexts manage the creation of those classes. So while the classes (and subclasses) will be created as part of this prototype a database will be used that includes dummy data for each type. Additionally Course Search is not part of the implementation for this context, however I will stub out the basic functionality (ie can return a course by id) for use with the prototype. The entry view will be the students main page including their registered courses and the options add a course and drop all courses. Students will also be able to click on a course to view from which they can either drop the course or reschedule. Clicking on add a course will bring the student to the course search page where they can enter an id to find a course. A StudentController will handle the logic around getting student details, checking for restrictions, and adding/dropping courses to a students courseload. A CourseController will handle the retrieving of course details as well as checking requirements and retrieving labs. A PermissionController will handle sending permission requests to instructors.

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<title>Dogs</title>
+{% if dog %}
+<h1>Name: {{ dog.name }}</h1>
+<h2>Age: {{ dog.age }}</h2>
+<h2>Adopted: {% if dog.adopted %}Yes{% else %} No{% endif %}</h2>
+{% if not dog.adopted %}
+<img
+  src="{{ url_for('static', filename=dog.unadopted_image) }}"
+  style="max-width: 20rem"
+/>
+<form action="" method="post">
+  <button name="adopt" value="adopt">Adopt!</button>
+</form>
+{% else %}
+<img
+  src="{{ url_for('static', filename=dog.adopted_image) }}"
+  style="max-width: 20rem"
+/>
+{% endif %} {% else %}
+<h1>The dog doesn't exist</h1>
+{% endif %}

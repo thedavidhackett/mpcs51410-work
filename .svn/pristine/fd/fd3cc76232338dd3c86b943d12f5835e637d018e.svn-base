@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<title>Dogs</title>
+<h1>Adopt a dog!</h1>
+<h2>Available Dogs</h2>
+{% for dog in dogs %}
+<p><a href="/{{dog.id}}">{{ dog.name }}</a></p>
+{% endfor %}

@@ -1,0 +1,28 @@
+{% macro display_course(course) %}
+<div>
+  <a href="{{ url_for('course.view', id=course.id) }}"
+    >{{ course.id }} - {{ course.course.name }}</a
+  >
+</div>
+{% endmacro %} {% macro display_notification(n) %}
+<div class="{{ n.type }}">
+  <p>{{ n.msg }}</p>
+  {% if n.type == "course_pending" %}
+  <form
+    action="{{ url_for('course.pending', id=n.course_id) }}"
+    ,
+    method="post"
+  >
+    <button type="submit">Request Permission</button>
+  </form>
+  {% endif %} {% if n.type == "course_tentative" %}
+  <form
+    action="{{ url_for('course.tentative', id=n.course_id) }}"
+    ,
+    method="post"
+  >
+    <button type="submit">Request Permission</button>
+  </form>
+  {% endif %}
+</div>
+{% endmacro %}

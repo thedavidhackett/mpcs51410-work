@@ -1,0 +1,109 @@
+from abc import abstractmethod
+from typing import Dict, List
+
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from .base import ManagedEntity
+from .permission import Permission
+from .registration import Registration
+from .restriction import Restriction
+
+class User(ManagedEntity):
+    __abstract__ = True
+    __first_name : Mapped[str] = mapped_column("first_name", String(100))
+    __last_name : Mapped[str] = mapped_column("last_name", String(100))
+    __password : Mapped[str] = mapped_column("password", String(100))
+
+    def __init__(self, first_name: str, last_name : str) -> None:
+        super().__init__()
+        self.__first_name : str = first_name
+        self.__last_name : str = last_name
+        self.__password : str = ""
+
+    @property
+    def first_name(self) -> str:
+        return self.__first_name
+
+    @property
+    def last_name(self) -> str:
+        return self.__last_name
+
+    @abstractmethod
+    def full_name(self) -> str:
+        pass
+
+    @abstractmethod
+    def view(self) -> Dict[str, object]:
+        pass
+
+
+class Student(User):
+    id : Mapped[int] = mapped_column("id", primary_key=True, autoincrement=True)
+    __level : Mapped[str] = mapped_column("level", String(20))
+    __capacity : Mapped[int] = mapped_column("capacity")
+    registrations : Mapped[List[Registration]] = relationship(lazy="subquery")
+    restrictions : Mapped[List[Restriction]] = relationship(lazy="subquery")
+    permissions : Mapped[List[Permission]] = relationship(lazy="subquery")
+
+    def __init__(self, first_name: str, last_name: str, level : str, capacity : int = 3) -> None:
+        super().__init__(first_name, last_name)
+        self.__level = level
+        self.registrations : List[Registration] = []
+        self.restrictions : List[Restriction] = []
+        self.__capacity = capacity
+
+    @property
+    def level(self) -> str:
+        return self.__level
+
+    def at_capacity(self) -> bool:
+        return len(self.registrations) >= self.__capacity
+
+    def full_name(self):
+        return self.first_name + " " + self.last_name
+
+    def view(self) -> Dict[str, object]:
+        return {"id": self.id, "name": self.full_name(), "level" : self.level}
+
+    def add_registration(self, r : Registration) -> None:
+        self.registrations.append(r)
+
+    def add_restriction(self, r : Restriction) -> None:
+        self.restrictions.append(r)
+
+    def is_enrolled_in_course(self, course_section_id : int) -> bool:
+        reg : Registration
+        for reg in self.registrations:
+            if reg.course_section_id == course_section_id:
+                return True
+
+        return False
+
+
+class Instructor(User):
+    id : Mapped[int] = mapped_column("id", primary_key=True, autoincrement=True)
+    type: Mapped[str] = mapped_column(String(100))
+    __mapper_args__ = {
+        "polymorphic_identity": "instructor",
+        "polymorphic_on": "type",
+    }
+
+    def __init__(self, first_name: str, last_name: str) -> None:
+        super().__init__(first_name, last_name)
+
+    def full_name(self) -> str:
+        return "Professor " + " " + self.first_name + " " + self.last_name
+
+    def view(self) -> Dict[str, object]:
+        return {"name": self.full_name, "id": self.id}
+
+
+class Professor(Instructor):
+    id: Mapped[int] = mapped_column(ForeignKey("instructor.id"), primary_key=True)
+    __mapper_args__ = {
+        "polymorphic_identity": "professor",
+    }
+
+    def __init__(self, first_name: str, last_name: str) -> None:
+        super().__init__(first_name, last_name)

@@ -1,0 +1,1 @@
+FYI for deliverable 3, I utilizing SQLAlchemy as an ORM. Currently my database is sqlite out of convenience but I will switch to postgres or mysql for the final iteration. Since it is sqllite you could potentially run my project if you have python and flask downloaded, including running the tests. You just need to run db_setup.py first.

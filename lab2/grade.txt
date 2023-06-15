@@ -1,0 +1,8 @@
+Grade: 9.5/10
+Grader: Alan Illing
+
+Nice work overall. I took off a view points because
+- The bounded contexts seems a bit lacking- namely, I'm not sure where the boundaries themselves here. You may be confused on the goal of this diagram.
+- The flask implementation has a decent start in that it loads the database configuration, but there are no routes beyond the dummy route
+- There's no testing framework- I could encourage you to adopt a standard testing framework such as pytest.
+
